@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Servus - Masterarbeit</title>
+        <meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="shortcut icon" href="../theme/images/favicon.ico"/>
+        <link rel="stylesheet" href="../theme/css/main.css" type="text/css" />
+
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="../css/ie.css"/>
+                <script src="../js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="../css/ie6.css"/><![endif]-->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js" type="text/javascript"></script>
+
+
+</head>
+
+<body id="index" class="home">
+	
+  <!-- <header id="banner" class="body"> -->
+  <!--               <h1><a href="../"><img src="http://www.launchyard.com/images/logo.png" /><strong>Napon</strong></a></h1> -->
+  <!--       </header> --> 
+
+  <div class="LaunchyardDetail">
+    <!--  <p> 
+    <img src="../theme/images/profile_image.gif" width="200" height="200" alt="Graph icon"> 
+    </p>-->
+    <p><a id="sitesubtitle" href="../">Napon</a></p>
+<p id="sitetagline">Fake it until you make it</p>
+
+    <!-- <ul> -->
+    <!--   <li><a href="../pages/about.html">about</a></li> -->
+      <!-- <li><a href="../pages/about.html">articles</a></li> -->
+<!--  -->
+<!--         <br/> -->
+<!--         <br/> -->
+<!--      -->        
+<!--       <li><a href="">GPIO control bugs for 6678L -2</a></li> -->
+<!--      -->        
+<!--       <li><a href="">GPIO control bugs for 6678L -1</a></li> -->
+<!--      -->        
+<!--       <li><a href="">Linker to 6678L failed problem</a></li> -->
+<!--      -->        
+<!--       <li><a href="">Rules and guidelines for drawing good schematics</a></li> -->
+<!--      -->        
+<!--       <li><a href="">Transplanting Protocol to DSP</a></li> -->
+<!--      -->        
+<!--       <li><a href="">CCS6.1 breakpoint problem</a></li> -->
+<!--      -->        
+<!--       <li><a href="">DSP6678L-Interrupt</a></li> -->
+<!--      -->        
+<!--       <li><a href="">DSP6678L-GPIO</a></li> -->
+<!--      -->        
+<!--       <li><a href="">stack error for downloading 6678L</a></li> -->
+<!--      -->        
+<!--       <li><a href="">BOM</a></li> -->
+<!--      -->        
+<!--       <li><a href="">Presentaion Skills</a></li> -->
+<!--      -->        
+<!--       <li><a href="">Via and pad</a></li> -->
+<!--      -->        
+<!--       <li><a href="">PCB stackup from Company</a></li> -->
+<!--      -->        
+<!--       <li><a href="">PCB Stack-up</a></li> -->
+<!--      -->        
+<!--       <li><a href="">AMC1</a></li> -->
+<!--      -->        
+<!--       <li><a href="">Summary-HW Design</a></li> -->
+<!--      -->        
+<!--       <li><a href="">FPGA Design</a></li> -->
+<!--      -->        
+<!--       <li><a href="">VCCIO and LVDS input</a></li> -->
+<!--      -->        
+<!--       <li><a href="">LVDS differential input pairs in FPGA</a></li> -->
+<!--      -->        
+<!--       <li><a href="">Tx0106/0108 Voltage transfer & Buffer</a></li> -->
+<!--      -->        
+<!--       <li><a href="">Cyclone III Devices Single-Ended I/O Standard</a></li> -->
+<!--      -->        
+<!--       <li><a href="">Changing the Values and names at ONCE in AD</a></li> -->
+<!--      -->        
+<!--       <li><a href="">Design of FPGA-Board(Cyclone3)</a></li> -->
+<!--      -->        
+<!--       <li><a href="">Picking Resistors for LEDs</a></li> -->
+<!--      -->        
+<!--       <li><a href="">ADC board design</a></li> -->
+<!--      -->        
+<!--       <li><a href="">ADC protection circuit design</a></li> -->
+<!--      -->        
+<!--       <li><a href="">Questions of HW design</a></li> -->
+<!--      -->        
+<!--       <li><a href="">Generating Libs for Altium Design</a></li> -->
+<!--      -->        
+<!--       <li><a href="">Communication between FPGA and DSP28335</a></li> -->
+<!--      -->        
+<!--       <li><a href="">GPIO DIR change limit</a></li> -->
+<!--      -->        
+<!--       <li><a href="">28335 C skills</a></li> -->
+<!--      -->        
+<!--       <li><a href="">DSP28335 GPIO</a></li> -->
+<!--      -->        
+<!--       <li><a href="">Tristate_FPGA</a></li> -->
+<!--      -->        
+<!--       <li><a href="">VHDL</a></li> -->
+<!--      -->
+<!--  -->
+    <!-- </ul> -->
+
+    <!-- This belongs in the about page -->
+      <!--  -->
+
+<ul>
+	<li><a href="../category/leben.html">leben</a></li>
+	<li><a href="../category/masterarbeit.html">Masterarbeit</a></li>
+</ul>
+ 
+ 
+     <p>
+	<a id="aboutlink" href="../pages/about.html">about</a>
+	</p>
+ 
+ 
+  </div>
+
+        
+        
+
+    
+            <aside id="featured">
+                <div class="body">
+                    <article>
+                        <h1 class="entry-title"><a href="../gpio-control-bugs-for-6678l-2.html">GPIO control bugs for 6678L -2</a></h1>
+<div class="post-info">
+	<ul>
+        <li class="vcard author">
+                 by&nbsp;<a class="url fn" href="../author/d-yu.html">d-yu</a>
+        </li>
+        <li class="published" title="2015-08-13T18:10:49+02:00">
+          on&nbsp;Do 13 August 2015
+        </li>
+
+	</ul>
+
+</div><!-- /.post-info --><h2>different setting !</h2>
+<div class="highlight"><pre>        gpGPIO_regs-&gt;BANK_REGISTERS[0].SET_DATA = (1&lt;&lt;12);  // send address 10
+        gpGPIO_regs-&gt;BANK_REGISTERS[0].CLR_DATA = (1&lt;&lt;11);
+        gpGPIO_regs-&gt;BANK_REGISTERS[0].SET_DATA = (1&lt;&lt;14);  // send address 10
+</pre></div>
+
+
+<p>this is different with just </p>
+<div class="highlight"><pre>gpGPIO_regs-&gt;BANK_REGISTERS[0].OUT_DATA = 0x00005000
+</pre></div>
+
+
+<p>actually i just want to to set both 12th and 14th bit to 1 ...</p>
+                    </article>
+                </div>
+            </aside><!-- /#featured -->
+            
+        
+        
+
+    
+            <aside id="featured">
+                <div class="body">
+                    <article>
+                        <h1 class="entry-title"><a href="../gpio-control-bugs-for-6678l-1.html">GPIO control bugs for 6678L -1</a></h1>
+<div class="post-info">
+	<ul>
+        <li class="vcard author">
+                 by&nbsp;<a class="url fn" href="../author/d-yu.html">d-yu</a>
+        </li>
+        <li class="published" title="2015-08-12T17:07:46+02:00">
+          on&nbsp;Mi 12 August 2015
+        </li>
+
+	</ul>
+
+</div><!-- /.post-info --><h2>NOTE for gpio control</h2>
+<p><code>gpGPIO_regs-&gt;BANK_REGISTERS[0].CLR_DATA =(1&lt;&lt;14); // DSP_ACK = 0</code>
+and 
+ <code>gpGPIO_regs-&gt;BANK_REGISTERS[0].CLR_DATA |=(1&lt;&lt;14); // DSP_ACK = 0</code></p>
+<p>are different!</p>
+<p>But in the datasheet of TI, it says write a 0 to the CLR or SET register has no influence on the state pin. </p>
+<p>However, as i ...</p>
+                    </article>
+                </div>
+            </aside><!-- /#featured -->
+            
+        
+        
+
+    
+            <aside id="featured">
+                <div class="body">
+                    <article>
+                        <h1 class="entry-title"><a href="../linker-to-6678l-failed-problem.html">Linker to 6678L failed problem</a></h1>
+<div class="post-info">
+	<ul>
+        <li class="vcard author">
+                 by&nbsp;<a class="url fn" href="../author/d-yu.html">d-yu</a>
+        </li>
+        <li class="published" title="2015-08-07T22:36:49+02:00">
+          on&nbsp;Fr 07 August 2015
+        </li>
+
+	</ul>
+
+</div><!-- /.post-info --><h2>Getting crazy with the connections problems</h2>
+<p>yestoday i came to the lab and aimed to finish the work!</p>
+<p>but when i make everything ok and proceed the testing work of my communication protocol!</p>
+<p>But But , the bloody 6678L board is noooooot working !!!
+i can not even download the program to ...</p>
+                    </article>
+                </div>
+            </aside><!-- /#featured -->
+            
+        
+        
+
+    
+            <aside id="featured">
+                <div class="body">
+                    <article>
+                        <h1 class="entry-title"><a href="../rules-and-guidelines-for-drawing-good-schematics.html">Rules and guidelines for drawing good schematics</a></h1>
+<div class="post-info">
+	<ul>
+        <li class="vcard author">
+                 by&nbsp;<a class="url fn" href="../author/d-yu.html">d-yu</a>
+        </li>
+        <li class="published" title="2015-07-28T14:52:34+02:00">
+          on&nbsp;Di 28 Juli 2015
+        </li>
+
+	</ul>
+
+</div><!-- /.post-info --><h2>Rules and guidelines for drawing good schematics</h2>
+<h3>Quota from Electronics stack Exchange</h3>
+<h2><a href="http://electronics.stackexchange.com/questions/28251/rules-and-guidelines-for-drawing-good-schematics/28255#28255" title="Original article">Orignal article!!! </a></h2>
+<p>A schematic is a visual representation of a circuit. As such, its purpose is to communicate a circuit to someone else. A schematic in a special computer program for that purpose is also a machine-readable description ...</p>
+                    </article>
+                </div>
+            </aside><!-- /#featured -->
+            
+        
+        
+
+    
+            <aside id="featured">
+                <div class="body">
+                    <article>
+                        <h1 class="entry-title"><a href="../transplanting-protocol-to-dsp.html">Transplanting Protocol to DSP</a></h1>
+<div class="post-info">
+	<ul>
+        <li class="vcard author">
+                 by&nbsp;<a class="url fn" href="../author/d-yu.html">d-yu</a>
+        </li>
+        <li class="published" title="2015-07-22T16:53:27+02:00">
+          on&nbsp;Mi 22 Juli 2015
+        </li>
+
+	</ul>
+
+</div><!-- /.post-info --><h2>test the protocol on 8 core dsp</h2>
+<p>Changing the pin Assignments and adjustment the Pin on both FPGA and DSP to the Communication Protocol. </p>
+<p>results: <code>it works!</code></p>
+<p>problems:</p>
+<ol>
+<li>wire house can not be installed propertly.</li>
+<li>some stranges, by default state, all the pins are high voltage level</li>
+<li>80 pin connecter ...</li></ol>
+                    </article>
+                </div>
+            </aside><!-- /#featured -->
+            
+        
+        
+
+    
+            <aside id="featured">
+                <div class="body">
+                    <article>
+                        <h1 class="entry-title"><a href="../ccs61-breakpoint-problem.html">CCS6.1 breakpoint problem</a></h1>
+<div class="post-info">
+	<ul>
+        <li class="vcard author">
+                 by&nbsp;<a class="url fn" href="../author/d-yu.html">d-yu</a>
+        </li>
+        <li class="published" title="2015-07-21T17:19:17+02:00">
+          on&nbsp;Di 21 Juli 2015
+        </li>
+
+	</ul>
+
+</div><!-- /.post-info --><h2>Debug problem of breakpoint</h2>
+<p>Problem:</p>
+<ol>
+<li>can't not set breakpoint in the function</li>
+<li>when click debug, <code>No source available for main()</code></li>
+<li>even i can place breakpoint, it will always pointed at the beginning of a function, can not be in the middle.</li>
+</ol>
+<hr />
+<p><strong>Solution</strong>:</p>
+<p>Do not optimize the debug, and code ...</p>
+                    </article>
+                </div>
+            </aside><!-- /#featured -->
+            
+        
+        
+
+    
+            <aside id="featured">
+                <div class="body">
+                    <article>
+                        <h1 class="entry-title"><a href="../dsp6678l-interrupt.html">DSP6678L-Interrupt</a></h1>
+<div class="post-info">
+	<ul>
+        <li class="vcard author">
+                 by&nbsp;<a class="url fn" href="../author/d-yu.html">d-yu</a>
+        </li>
+        <li class="published" title="2015-07-20T23:17:48+02:00">
+          on&nbsp;Mo 20 Juli 2015
+        </li>
+
+	</ul>
+
+</div><!-- /.post-info --><h2>Today's progress</h2>
+<p>until today, i have managed control the GPIO functions like set, clear, output_data etc. and the trigger Interrupt in DSP6678L.
+by using CSL package.</p>
+<p>this is a basic package from Texas Instrument. it contains amost all the basic drive functions and maps.</p>
+<p>That means, User did not ...</p>
+                    </article>
+                </div>
+            </aside><!-- /#featured -->
+            
+        
+        
+
+    
+            <aside id="featured">
+                <div class="body">
+                    <article>
+                        <h1 class="entry-title"><a href="../dsp6678l-gpio.html">DSP6678L-GPIO</a></h1>
+<div class="post-info">
+	<ul>
+        <li class="vcard author">
+                 by&nbsp;<a class="url fn" href="../author/d-yu.html">d-yu</a>
+        </li>
+        <li class="published" title="2015-07-19T14:19:47+02:00">
+          on&nbsp;So 19 Juli 2015
+        </li>
+
+	</ul>
+
+</div><!-- /.post-info --><h2>GPIO Interrupts</h2>
+<p><img alt="GPIO" src="http://i.imgur.com/jfaDjCF.png" /></p>
+<p>Here means!</p>
+<p>GPINTn(<strong>n represents the core n</strong>) is the Event Number of GPIO 0 - 7</p>
+<p>e.g. GPIO0 coresponds the Core 0</p>
+<p>for the GPIO 9 - 15, they have individuel Event Number.
+BUT they all can be assigned to the 8 Cores of DSP</p>
+                    </article>
+ 
+<div class="paginator">
+    <div class="navButton">Page 1 / 5</div>
+        <div class="navButton"><a href="../category/masterarbeit2.html" >Next</a></div>
+</div>
+                </div>
+            </aside><!-- /#featured -->
+            
+        
+        <section id="extras" >
+        
+        </section><!-- /#extras -->
+	
+        <footer id="contentinfo" >
+                <address id="about" class="vcard ">
+                Proudly powered by <a href="http://getpelican.com/" target="_blank">Pelican</a>, which takes
+                great advantage of <a href="http://python.org" target="_blank">Python</a>.
+		
+                </address><!-- /#about -->
+		
+
+                
+        </footer><!-- /#contentinfo -->
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-63036033-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+<script type="text/javascript">
+    var disqus_shortname = 'd-yu';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

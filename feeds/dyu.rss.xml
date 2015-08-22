@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Servus</title><link>d-yu.github.io/</link><description>Napon</description><atom:link href="d-yu.github.io/feeds%5Cdyu.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 20 May 2015 12:18:41 +0200</lastBuildDate><item><title>Cyclone III Devices Single-Ended I/O Standard</title><link>d-yu.github.io/cyclone-iii-devices-single-ended-io-standard.html</link><description>&lt;h2&gt;Cyclone III Devices Single-Ended I/O Standard 高低电平的判断&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="Cyclone III Devices Single-Ended I/O Standard Specifications" src="http://i.imgur.com/BWJd6qm.png" /&gt;
+简而言之，就是输入电平高于1.7V，就判定为高电平；
+对应的低于0.8就是低电平&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">d.yu</dc:creator><pubDate>Wed, 20 May 2015 12:18:41 +0200</pubDate><guid>tag:,2015-05-20:d-yu.github.io/cyclone-iii-devices-single-ended-io-standard.html</guid><category>FPGA</category><category></category></item><item><title>ADC protection circuit design</title><link>d-yu.github.io/adc-protection-circuit-design.html</link><description>&lt;p&gt;Author: d-yu&lt;/p&gt;
+&lt;h2&gt;ADC protection circuit design&lt;/h2&gt;
+&lt;p&gt;5/12/2015 8:56:36 PM 
+ 方案全部错误，因为输入大电压时，运放无法正常工作！&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;There was a time when I thought zener diodes were great. Now I know that they're not. As a matter of fact they stink. This diode has a 4% tolerance at 250 µA, so you may lose the top 200 mV of your reading, but it gets worse: at 10 µA zener voltage is only 4.3 V, that's a 14 % error. If your input comes from a relatively high impedance source, like a resistor divider you may lose the top 700 mV.&lt;/p&gt;
+&lt;p&gt;Most microcontrollers have clamping diodes on their I/O pins:&lt;/p&gt;
+&lt;p&gt;enter image description here&lt;/p&gt;
+&lt;p&gt;You can use those. If your signal comes from a low impedance output you'll want to add a series resistor to protect the clamping diode against a too high current. 50 mA is often specified as Absolute Maximum Rating. If you use a 15 kΩ resistor you'll limit the current to 1 mA for a 20 V input. The Photon rightly points out that the current shouldn't be too high. That's because you're injecting current where the voltage comes from a voltage regulator, and that can only source current, not sink it. So if an external source injects current the regulator's load should be able to drain it to ground.&lt;/p&gt;
+&lt;p&gt;As PetPaulsen points out there's debate whether this is acceptable practice. The datasheet may say maximum input is Vcc + 0.3 V, but it may also say maximum 20 mA for the clamping diodes (for instance this PIC controller. That may mean that the clamping diode voltage drop is less than 0.3 V, for instance if they're Schottky's.
+Anyway, you can always use your own external diode to clamp to Vcc. This Schottky diode only drops 100 mV at 10 mA, so it will clamp the input to a safe value. Don't forget the 15 kΩ resistor for low output impedance sources.&lt;/p&gt;
+&lt;p&gt;If your input voltage doesn't go negative then the ground clamp isn't required.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;大电流的话，Zenner二极管容忍度小，出错率低。就是压降要小很多&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;em&gt;LINK:&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www.ti.com/lit/an/slaa593/slaa593.pdf" title="TI ADC input protection"&gt;TI ADC input protection&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://electronics.stackexchange.com/questions/35807/how-would-i-design-a-protection-clipper-circuit-for-adc-input" title="A solution for the overvoltage protection"&gt;A solution for the overvoltage protection&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www.microchip.com/forums/m637934.aspx" title="disscussion"&gt;A similar disscuss online&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">D.Yu</dc:creator><pubDate>Tue, 12 May 2015 11:22:06 +0200</pubDate><guid>tag:,2015-05-12:d-yu.github.io/adc-protection-circuit-design.html</guid></item><item><title>28335 C skills</title><link>d-yu.github.io/28335-c-skills.html</link><description>&lt;h2&gt;一点笔记&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;对于28335 DSP 来说，GPIO的赋值最好使用GPxSET,GPxCLEAR和GPxTOGGLE. GPxDAT只是用来读取数据的时候方面&lt;/li&gt;
+&lt;li&gt;对于程序中递增变量，必须要注意&lt;span style = "colour: red"&gt;不能让它无限递增&lt;span&gt;下去，可能会导致寄存器溢出，影响ALU操作。&lt;/li&gt;
+&lt;li&gt;对于VHDL中的状态机的话，可以使用在每个状态下让&lt;strong&gt;不同的灯&lt;/strong&gt;亮起来，这样进行判断当前所处状态&lt;/li&gt;
+&lt;/ol&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">d.yu</dc:creator><pubDate>Fri, 17 Apr 2015 23:41:14 +0200</pubDate><guid>tag:,2015-04-17:d-yu.github.io/28335-c-skills.html</guid><category>dsp</category></item><item><title>DSP28335 GPIO</title><link>d-yu.github.io/dsp28335-gpio.html</link><description>&lt;h2&gt;一点笔记&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;对于28335 DSP 来说，GPIO的赋值最好使用GPxSET,GPxCLEAR和GPxTOGGLE. GPxDAT只是用来读取数据的时候方面&lt;/li&gt;
+&lt;li&gt;对于程序中递增变量，必须要注意&lt;span style = "colour: red"&gt;不能让它无限递增&lt;span&gt;下去，可能会导致寄存器溢出，影响ALU操作。&lt;/li&gt;
+&lt;li&gt;对于VHDL中的状态机的话，可以使用在每个状态下让&lt;strong&gt;不同的灯&lt;/strong&gt;亮起来，这样进行判断当前所处状态&lt;/li&gt;
+&lt;/ol&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">d.yu</dc:creator><pubDate>Fri, 17 Apr 2015 23:41:14 +0200</pubDate><guid>tag:,2015-04-17:d-yu.github.io/dsp28335-gpio.html</guid><category>dsp</category></item></channel></rss>

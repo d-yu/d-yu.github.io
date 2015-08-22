@@ -1,0 +1,743 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Servus</title><link href="d-yu.github.io/" rel="alternate"></link><link href="d-yu.github.io/feeds%5Cd-yu.atom.xml" rel="self"></link><id>d-yu.github.io/</id><updated>2015-08-21T23:14:53+02:00</updated><entry><title>Religion</title><link href="d-yu.github.io/religion.html" rel="alternate"></link><updated>2015-08-21T23:14:53+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-08-21:d-yu.github.io/religion.html</id><summary type="html">&lt;h2&gt;What is Religion?&lt;/h2&gt;
+&lt;p&gt;If some one asked me this question?&lt;/p&gt;
+&lt;p&gt;i might answer, christian? Buddhism? or no?&lt;/p&gt;
+&lt;p&gt;Let's see a story!&lt;/p&gt;
+&lt;p&gt;&lt;img alt="religion" src="http://i.imgur.com/GXyXbeM.jpg" /&gt;&lt;/p&gt;
+&lt;p&gt;https://github.com/d-yu/d-yu.github.io.git&lt;/p&gt;</summary></entry><entry><title>Life with color</title><link href="d-yu.github.io/life-with-color.html" rel="alternate"></link><updated>2015-08-21T22:58:31+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-08-21:d-yu.github.io/life-with-color.html</id><summary type="html">&lt;h2&gt;什么是有意思？&lt;/h2&gt;
+&lt;p&gt;越来越觉的，小时候是多么的有趣
+对什么都非常感兴趣，生活充满了乐趣！&lt;/p&gt;
+&lt;p&gt;可能由于出生时间不长，对这个世界充满了好奇，好奇一多就会觉的有意思。
+现在的我对于好多事情都没有当年的激情，有时还会觉的无聊&lt;/p&gt;
+&lt;p&gt;可能像 IT狂人里面说的，&lt;/p&gt;
+&lt;p&gt;i am a lonely person walking on the lonely street alone and thinking about my lonelyness.&lt;/p&gt;
+&lt;p&gt;曾经也在&amp;lt;一个&amp;gt; 上看到&lt;/p&gt;
+&lt;p&gt;其实有时候我觉的就是孤独，但是就只是孤独而已，我从来不觉得自己可怜，或者是抱怨生活，我真的只是孤独而已。&lt;/p&gt;
+&lt;p&gt;希望自己能找到更多的兴趣，更多的乐趣点，能支撑我走过人生的风风雨雨~&lt;/p&gt;
+&lt;p&gt;最后讲个笑话：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alone" src="http://i.imgur.com/pS7k6Vh.jpg" /&gt;&lt;/p&gt;</summary></entry><entry><title>GPIO control bugs for 6678L -2</title><link href="d-yu.github.io/gpio-control-bugs-for-6678l-2.html" rel="alternate"></link><updated>2015-08-13T18:10:49+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-08-13:d-yu.github.io/gpio-control-bugs-for-6678l-2.html</id><summary type="html">&lt;h2&gt;different setting !&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;        gpGPIO_regs-&amp;gt;BANK_REGISTERS[0].SET_DATA = (1&amp;lt;&amp;lt;12);  // send address 10
+        gpGPIO_regs-&amp;gt;BANK_REGISTERS[0].CLR_DATA = (1&amp;lt;&amp;lt;11);
+        gpGPIO_regs-&amp;gt;BANK_REGISTERS[0].SET_DATA = (1&amp;lt;&amp;lt;14);  // send address 10
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;this is different with just &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;gpGPIO_regs-&amp;gt;BANK_REGISTERS[0].OUT_DATA = 0x00005000
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;actually i just want to to set both 12th and 14th bit to 1,and clear 11th bit. &lt;/p&gt;
+&lt;p&gt;at first look, the function is the same!
+but actually it may cause problems for my communication protocol! 
+like, if i want to &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;Read_ADC_All();
+
+Send_Data(1,2,3,4,5,6,7,8);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;the state is wrong, it will not execute the send_Date function, but execute another Read_ADC()function.
+&lt;img alt="Imgur" src="http://i.imgur.com/Bm7p7IK.png" /&gt;&lt;/p&gt;
+&lt;p&gt;because as i have tested, the second code will set the 
+Set the 14th bit first and then for the 12th and 11th, it may execute from high bit to low bit (LSB)! &lt;/p&gt;
+&lt;p&gt;so it is recommanded to use  the first one!&lt;/p&gt;
+&lt;p&gt;the right results:
+&lt;img alt="Imgur" src="http://i.imgur.com/xZxyhAM.png" /&gt;&lt;/p&gt;</summary></entry><entry><title>GPIO control bugs for 6678L -1</title><link href="d-yu.github.io/gpio-control-bugs-for-6678l-1.html" rel="alternate"></link><updated>2015-08-12T17:07:46+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-08-12:d-yu.github.io/gpio-control-bugs-for-6678l-1.html</id><summary type="html">&lt;h2&gt;NOTE for gpio control&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;gpGPIO_regs-&amp;gt;BANK_REGISTERS[0].CLR_DATA =(1&amp;lt;&amp;lt;14); // DSP_ACK = 0&lt;/code&gt;
+and 
+ &lt;code&gt;gpGPIO_regs-&amp;gt;BANK_REGISTERS[0].CLR_DATA |=(1&amp;lt;&amp;lt;14); // DSP_ACK = 0&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;are different!&lt;/p&gt;
+&lt;p&gt;But in the datasheet of TI, it says write a 0 to the CLR or SET register has no influence on the state pin. &lt;/p&gt;
+&lt;p&gt;However, as i have tested, &lt;/p&gt;
+&lt;p&gt;the first code will only clear the 14th pin
+but the seconde code will not only clear 14th pin, but also some other pins, that is the unstable!&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;conclusion:&lt;/p&gt;
+&lt;p&gt;Recommandation: &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ONLY &lt;/strong&gt;
+ use 
+ &lt;code&gt;gpGPIO_regs-&amp;gt;BANK_REGISTERS[0].CLR_DATA |=(1&amp;lt;&amp;lt;14); // DSP_ACK = 0&lt;/code&gt;&lt;/p&gt;</summary></entry><entry><title>Linker to 6678L failed problem</title><link href="d-yu.github.io/linker-to-6678l-failed-problem.html" rel="alternate"></link><updated>2015-08-07T22:36:49+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-08-07:d-yu.github.io/linker-to-6678l-failed-problem.html</id><summary type="html">&lt;h2&gt;Getting crazy with the connections problems&lt;/h2&gt;
+&lt;p&gt;yestoday i came to the lab and aimed to finish the work!&lt;/p&gt;
+&lt;p&gt;but when i make everything ok and proceed the testing work of my communication protocol!&lt;/p&gt;
+&lt;p&gt;But But , the bloody 6678L board is noooooot working !!!
+i can not even download the program to the board and manke the linker to the board !&lt;/p&gt;
+&lt;p&gt;WTF&lt;/p&gt;
+&lt;p&gt;There are various errors of the connections!
+one of the error is like below:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;Error connecting to the target:
+Connect to PRSC failed
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And there are also some errors about the memory errors or encounter some exception handling error !&lt;/p&gt;
+&lt;p&gt;No idea to that ! &lt;/p&gt;
+&lt;p&gt;After trial and error the whole day i still can not connect the board. 
+i  also suspect the 6678L is broken by my stupid action for the 80 pins connector. &lt;/p&gt;
+&lt;p&gt;At last i told my supervisor the issues, he is being so mean to me and hard on me. &lt;/p&gt;
+&lt;p&gt;i also think about to buy another new 6678l board by myself which costs about 400 Euros&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;Today after i talked with Imrat, anther student of my Supervisor.&lt;/p&gt;
+&lt;p&gt;i get the difference between his and mein program. &lt;/p&gt;
+&lt;p&gt;for the program it need a &lt;strong&gt;Gel&lt;/strong&gt; file &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Hi Felix, &lt;/p&gt;
+&lt;p&gt;Yeah, I think so too. It might be the noise that cause the problem.&lt;/p&gt;
+&lt;p&gt;As far as I have tested the board now, at least until now, it works fine every time.
+I add a Gel. File to the CCS, and according to TI ‘s datasheet, it is recommended to add this Gel file before downloading the program. &lt;/p&gt;
+&lt;p&gt;I think this file is a startup file which will check the 6678L’s memory address and disable all the interrupt first, something like clean all the thing. &lt;/p&gt;
+&lt;p&gt;But without this file i can also run my program sometime properly before. I don’t know this Gel files before, even for other DSPs or MCU from other companies. So I guess, it is possibly there is a OS on the DSP board, so this Gel file is needed . &lt;/p&gt;
+&lt;p&gt;Let’s see in the further.&lt;/p&gt;
+&lt;/blockquote&gt;</summary></entry><entry><title>A small things makes me a little drunk</title><link href="d-yu.github.io/a-small-things-makes-me-a-little-drunk.html" rel="alternate"></link><updated>2015-07-30T22:15:15+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-07-30:d-yu.github.io/a-small-things-makes-me-a-little-drunk.html</id><summary type="html">&lt;h2&gt;small things in 5B&lt;/h2&gt;
+&lt;p&gt;in our house there is a germanin called vik. 
+one day, vik told me in kitchen that she lost her new Iphone6 and she is totally bule and down..&lt;/p&gt;
+&lt;p&gt;that's trully scheisse.&lt;/p&gt;
+&lt;p&gt;and i told her a chinesie story about the horse. 
+one day a man lost his horse but he feels like nothing happened. he just thinking , that might not be a bad thing for me, bad things can also turn to good ones. &lt;/p&gt;
+&lt;p&gt;after servel days his lost horse come back with another horse. So now he got two horses. haha!&lt;/p&gt;
+&lt;p&gt;then i told Vik, you might get two Iphone6. haha, 
+she becomes a little cheer up !&lt;/p&gt;
+&lt;p&gt;and fininall at that night, she found her Iphone6 back just under a dustbin in the garden. 
+That is unbelieveable! 
+i just want to say, what's worong with the theif ?!&lt;/p&gt;
+&lt;p&gt;by the way, she promised me to take a look my german resume and correct it. &lt;/p&gt;
+&lt;p&gt;today i get the feedback from her. 
+and at the end of comments. 
+es steht:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Lebenslauf" src="http://i.imgur.com/fYDIZpg.png" /&gt;&lt;/p&gt;</summary></entry><entry><title>Rules and guidelines for drawing good schematics</title><link href="d-yu.github.io/rules-and-guidelines-for-drawing-good-schematics.html" rel="alternate"></link><updated>2015-07-28T14:52:34+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-07-28:d-yu.github.io/rules-and-guidelines-for-drawing-good-schematics.html</id><summary type="html">&lt;h2&gt;Rules and guidelines for drawing good schematics&lt;/h2&gt;
+&lt;h3&gt;Quota from Electronics stack Exchange&lt;/h3&gt;
+&lt;h2&gt;&lt;a href="http://electronics.stackexchange.com/questions/28251/rules-and-guidelines-for-drawing-good-schematics/28255#28255" title="Original article"&gt;Orignal article!!! &lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;A schematic is a visual representation of a circuit. As such, its purpose is to communicate a circuit to someone else. A schematic in a special computer program for that purpose is also a machine-readable description of the circuit. This use is easy to judge in absolute terms. Either the proper formal rules for describing the circuit are followed and the circuit is correctly defined or it isn't. Since there are hard rules for that and the result can be judge by machine, this isn't the point of the discussion here. This discussion is about rules, guidelines, and suggestions for good schematics for the first purpose, which is to communicate a circuit to a human. Good and bad will be judged here in that context.&lt;/p&gt;
+&lt;p&gt;Since a schematic is to communicate information, a good schematic does this quickly, clearly, and with low chance of misunderstanding. It is necessary but far from sufficient for a schematic to be correct. If a schematic is likely to mislead a human observer, it is a bad schematic whether you can eventually show that after due deciphering it was in fact correct. The point is clarity. A technically correct but obfuscated schematic is still a bad schematic.&lt;/p&gt;
+&lt;p&gt;Some people have their own silly-ass opinions, but here are the rules (actually you'll probably notice broad agreement between experienced people on most of the important points):&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Use component designators&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This is pretty much automatic with any schematic capture program, but we still often see schematics here without them. If you draw your schematic on a napkin and then scan it, make sure to add component designators. These make the circuit much easier to talk about. I have skipped over questions when schematics didn't have component designators because I didn't feel like bothering with the second 10 kΩ resistor from the left by the top pushbutton. It's a lot easier to say R1, R5, Q7, etc.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Clean up text placement&lt;/li&gt;
+&lt;/ol&gt;</summary></entry><entry><title>mess up with DSP baord</title><link href="d-yu.github.io/mess-up-with-dsp-baord.html" rel="alternate"></link><updated>2015-07-27T22:18:29+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-07-27:d-yu.github.io/mess-up-with-dsp-baord.html</id><summary type="html">&lt;p&gt;Mess up&lt;/p&gt;
+&lt;p&gt;always, alwasy!
+i can not find a property way to make the wire house to fit the connector of 80pins !&lt;/p&gt;
+&lt;p&gt;so today&lt;/p&gt;
+&lt;p&gt;i messed everything up!
+i ruined a board with a value of 400EURO!!!!&lt;/p&gt;
+&lt;p&gt;that is really a lesson and a hot jam!&lt;/p&gt;</summary></entry><entry><title>Transplanting Protocol to DSP</title><link href="d-yu.github.io/transplanting-protocol-to-dsp.html" rel="alternate"></link><updated>2015-07-22T16:53:27+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-07-22:d-yu.github.io/transplanting-protocol-to-dsp.html</id><summary type="html">&lt;h2&gt;test the protocol on 8 core dsp&lt;/h2&gt;
+&lt;p&gt;Changing the pin Assignments and adjustment the Pin on both FPGA and DSP to the Communication Protocol. &lt;/p&gt;
+&lt;p&gt;results: &lt;code&gt;it works!&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;problems:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;wire house can not be installed propertly.&lt;/li&gt;
+&lt;li&gt;some stranges, by default state, all the pins are high voltage level&lt;/li&gt;
+&lt;li&gt;80 pin connecter socket which i bought from RS matchs horrible to the wire house.... another small mistake by Hardware design.&lt;/li&gt;
+&lt;/ol&gt;</summary></entry><entry><title>CCS6.1 breakpoint problem</title><link href="d-yu.github.io/ccs61-breakpoint-problem.html" rel="alternate"></link><updated>2015-07-21T17:19:17+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-07-21:d-yu.github.io/ccs61-breakpoint-problem.html</id><summary type="html">&lt;h2&gt;Debug problem of breakpoint&lt;/h2&gt;
+&lt;p&gt;Problem:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;can't not set breakpoint in the function&lt;/li&gt;
+&lt;li&gt;when click debug, &lt;code&gt;No source available for main()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;even i can place breakpoint, it will always pointed at the beginning of a function, can not be in the middle.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;strong&gt;Solution&lt;/strong&gt;:&lt;/p&gt;
+&lt;p&gt;Do not optimize the debug, and code &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;change the Debugging model to full symbolic debug or the DEFAULT one.
+&lt;img alt="Imgur" src="http://i.imgur.com/Ad526Ug.png" /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img alt="Imgur" src="http://i.imgur.com/CfTh6sH.png" /&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Also, by default the debugger may set a breakpoint to halt at CIO functions, so a breakpoint will be used for this, allowing only one breakpoint to be available to the user. This breakpoint can be disabled by going into menu Run-&amp;gt;Debug Configurations…, Target tab, and unchecking the box for “Enable CIO function use”. Also ensure that the box for “Halt at program termination” is also unchecked if you want access to both available breakpoints
+&lt;img alt="Imgur" src="http://i.imgur.com/yAf3YAw.png" /&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;done!&lt;/p&gt;
+&lt;p&gt;by the way&lt;/p&gt;
+&lt;p&gt;i found the default setting will alwasy debug the program to all the 8 core of the board. but at the beginning of test phase, only 1 core is necessary!&lt;/p&gt;
+&lt;p&gt;so go to the &lt;strong&gt;Target Config&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;cross bypass, then the unwanted core will be bypassed!
+&lt;img alt="Imgur" src="http://i.imgur.com/RW2SHjs.png" /&gt;&lt;/p&gt;</summary></entry><entry><title>DSP6678L-Interrupt</title><link href="d-yu.github.io/dsp6678l-interrupt.html" rel="alternate"></link><updated>2015-07-20T23:17:48+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-07-20:d-yu.github.io/dsp6678l-interrupt.html</id><summary type="html">&lt;h2&gt;Today's progress&lt;/h2&gt;
+&lt;p&gt;until today, i have managed control the GPIO functions like set, clear, output_data etc. and the trigger Interrupt in DSP6678L.
+by using CSL package.&lt;/p&gt;
+&lt;p&gt;this is a basic package from Texas Instrument. it contains amost all the basic drive functions and maps.&lt;/p&gt;
+&lt;p&gt;That means, User did not have to write every simple functions by themself, they just need to call every basic functions from the Library and to use. &lt;/p&gt;
+&lt;p&gt;it is something like a application layer in Drive layer.&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;strong&gt;but&lt;/strong&gt; i found there is still some shortage of this CSL package. &lt;/p&gt;
+&lt;p&gt;the structure of GPIO can ONLY be used as a whole register, no actions are available for a single Bit. &lt;/p&gt;
+&lt;p&gt;What a pity. &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Solution&lt;/strong&gt;:  &lt;/p&gt;
+&lt;p&gt;Maybe to wirte a bit structure is a good idea, to implement the code. 
+just like the dsp28335 done.&lt;/p&gt;</summary></entry><entry><title>DSP6678L-GPIO</title><link href="d-yu.github.io/dsp6678l-gpio.html" rel="alternate"></link><updated>2015-07-19T14:19:47+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-07-19:d-yu.github.io/dsp6678l-gpio.html</id><summary type="html">&lt;h2&gt;GPIO Interrupts&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="GPIO" src="http://i.imgur.com/jfaDjCF.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Here means!&lt;/p&gt;
+&lt;p&gt;GPINTn(&lt;strong&gt;n represents the core n&lt;/strong&gt;) is the Event Number of GPIO 0 - 7&lt;/p&gt;
+&lt;p&gt;e.g. GPIO0 coresponds the Core 0&lt;/p&gt;
+&lt;p&gt;for the GPIO 9 - 15, they have individuel Event Number.
+BUT they all can be assigned to the 8 Cores of DSP&lt;/p&gt;</summary></entry><entry><title>stack error for downloading 6678L</title><link href="d-yu.github.io/stack-error-for-downloading-6678l.html" rel="alternate"></link><updated>2015-07-03T16:04:40+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-07-03:d-yu.github.io/stack-error-for-downloading-6678l.html</id><summary type="html">&lt;h2&gt;Stack errors for downloading&lt;/h2&gt;
+&lt;p&gt;Encounter this problem when i trying to download the GPIO program to 6678L.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="1" src="http://i.imgur.com/9QjVAYJ.png" /&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The .stack and .heap sections are created for the stack and heap respectively. This message is saying is that since you have not explicitly set the size of these sections, it is defaulting to a size of 0x400. This may be ok in some cases, but in projects that are C I/O intensive (like ones with printf, scanf etc), you may need to increase the stack and heap size. This can be done from the linker options (Project Properties-&amp;gt;Build-&amp;gt;Linker-&amp;gt;Basic Options).&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;C I/O&lt;/h3&gt;
+&lt;p&gt;C I/O is a broad term referring to the input and output functions in the RTS; and also to the ABI between the low-level RTS functions and the debugger, which allows the debugger to service the user's I/O requests.&lt;/p&gt;
+&lt;p&gt;C standard I/O functions:&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;putc &lt;/em&gt;getc *puts, putchar, getchar&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;scanf&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;printf&lt;/strong&gt; (exception: the *sprintf functions do not require the entire C I/O ABI)&lt;/p&gt;
+&lt;p&gt;fopen, fclose, fread, fwrite, fflush, freopen
+fseek, fgetpos, fsetpos, ftell, rewind
+perror
+remove, rename
+tmpfile, tmpnam&lt;/p&gt;
+&lt;p&gt;very important! &lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;C I/O is one of the &lt;strong&gt;MORE COMPLICATED THINGS&lt;/strong&gt; in the RTS. It has several layers of abstraction, invokes dynamic memory allocation, has lots of helper functions, and requires intervention from a host debugger to even work at all. For details about the implementation of C I/O, see the Optimizing C Compiler User's Guide section on the C I/O functions.&lt;/p&gt;</summary></entry><entry><title>BOM</title><link href="d-yu.github.io/bom.html" rel="alternate"></link><updated>2015-06-30T10:53:22+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-06-30:d-yu.github.io/bom.html</id><summary type="html">&lt;h2&gt;Generating the Bill of Material for Altium Design&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;go the the PCB window&lt;/li&gt;
+&lt;li&gt;choose the REPORT menu&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Report - project report -Bill of Materials&lt;/p&gt;
+&lt;p&gt;choose the value . &lt;/p&gt;
+&lt;p&gt;then export as excle file type&lt;/p&gt;
+&lt;p&gt;one import thing!&lt;/p&gt;
+&lt;p&gt;must change the file endname to .xls  , otherwise the Value will not show up !
+&lt;img alt="bom" src="http://i.imgur.com/KpXmzns.png" /&gt;&lt;/p&gt;
+&lt;p&gt;741331 - 62 &lt;/p&gt;</summary></entry><entry><title>Presentaion Skills</title><link href="d-yu.github.io/presentaion-skills.html" rel="alternate"></link><updated>2015-06-29T11:18:24+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-06-29:d-yu.github.io/presentaion-skills.html</id><summary type="html">&lt;h2&gt;Presentaion tips-Zwischenvortrag&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;the presentation is aimed at to convert some ideas to the audience! not talk too much deep technik things 
+not talk too basic things!&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;try to talk at least one ideas/ advantage clearly! that is a good presentation!&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;for the technik thing u can just add some extra slides , for the followed questions form the audience&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;talk the &lt;strong&gt;purpose/Advantage/ features&lt;/strong&gt; !!!&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;the audience are all rookies! The one who stands on the stage is the &lt;strong&gt;LEADER&lt;/strong&gt;! is the King! So , try to teach the rookies ! do not care about the questions.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</summary></entry><entry><title>Via and pad</title><link href="d-yu.github.io/via-and-pad.html" rel="alternate"></link><updated>2015-06-18T15:06:52+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-06-18:d-yu.github.io/via-and-pad.html</id><summary type="html">&lt;h2&gt;Via和Pad&lt;/h2&gt;
+&lt;p&gt;Via是可以连接信号的孔。
+pad只是打孔，和坐贴片焊脚什么的。&lt;/p&gt;
+&lt;p&gt;一般都用via!
+我只在制作库的时候用到pad&lt;/p&gt;
+&lt;p&gt;另外，大电流，比如很多信号汇聚在一端，需要使用粗一点的线和大的via（这里的大指的是pad面积大！）&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;correct!
+&lt;img alt="Imgur" src="http://i.imgur.com/wNPGlmu.png" /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这里的，乳白色就是导电的部分！&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Wrong!&lt;/li&gt;
+&lt;li&gt;&lt;img alt="Imgur" src="http://i.imgur.com/Yyw40Jr.png" /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;黄色的只是孔！是空的，没有导体！&lt;/p&gt;</summary></entry><entry><title>PCB stackup from Company</title><link href="d-yu.github.io/pcb-stackup-from-company.html" rel="alternate"></link><updated>2015-06-18T10:47:41+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-06-18:d-yu.github.io/pcb-stackup-from-company.html</id><summary type="html">&lt;h2&gt;PCB stackup info. from Company&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;The automatically by Altium Design generated gerber files contain no informations about the PCB stackup(layer sequence and layer type ,neither the thickness of layer).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;By default this PCB company (our PCB) make the 4 layer board to pp(8.4mil)-core(1.1)-pp (8.4).   this company has already consider to modify the thickness of layer in order to optimize the EMC.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</summary></entry><entry><title>PCB Stack-up</title><link href="d-yu.github.io/pcb-stack-up.html" rel="alternate"></link><updated>2015-06-11T13:23:23+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-06-11:d-yu.github.io/pcb-stack-up.html</id><summary type="html">&lt;h2&gt;Return Path discontinuities&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;the lowest impedance return path is in a plane directly &lt;strong&gt;underneath&lt;/strong&gt; the signal trace.&lt;/li&gt;
+&lt;li&gt;at high-frequency all currents in conductors are &lt;strong&gt;surface&lt;/strong&gt; currents.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img alt="Imgur" src="http://i.imgur.com/I3vh7xT.png" /&gt;&lt;/p&gt;
+&lt;p&gt;简单来说，高频的话，回馈电流就近流，低频就可能在整个GND层上乱窜&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Imgur" src="http://i.imgur.com/7hZcw7j.png" /&gt;&lt;/p&gt;</summary></entry><entry><title>AMC1</title><link href="d-yu.github.io/amc1.html" rel="alternate"></link><updated>2015-06-10T22:55:38+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-06-10:d-yu.github.io/amc1.html</id><summary type="html">&lt;p&gt;http://www.digikey.de/product-search/de?x=0&amp;amp;y=0&amp;amp;lang=de&amp;amp;site=de&amp;amp;KeyWords=Advanced+Mezzanine+Card&lt;/p&gt;</summary></entry><entry><title>Summary-HW Design</title><link href="d-yu.github.io/summary-hw-design.html" rel="alternate"></link><updated>2015-06-03T14:53:20+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-06-03:d-yu.github.io/summary-hw-design.html</id><summary type="html">&lt;h2&gt;My first Hardware design - FPGA control board&lt;/h2&gt;
+&lt;p&gt;1.
+&lt;img alt="Imgur" src="http://i.imgur.com/PDhXyZX.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Even the voltage split shoud NOT be right angle!&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;The Clearance of different VCC should be set property!&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;http://techdocs.altium.com/display/ADOH/Polygon+Pours+and+Copper+Regions#PolygonPoursandCopperRegions-ControllingtheClearanceUsingDesignRules&lt;/p&gt;
+&lt;p&gt;final Version
+&lt;img alt="Imgur" src="http://i.imgur.com/1VwpdvO.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Imgur" src="http://i.imgur.com/3g0jOn1.png" /&gt;&lt;/p&gt;
+&lt;p&gt;二，在机械层画一个“机械孔”。但是，使用这个方法时，经常有一点想不明白，明明在Machinal 1层中画了“机械孔”，但是进入3D效果预览时，却发现没有生成机械孔”，本以为是软件3D预览的问题，一直没想明白这个问题。
+     今天，在百度搜索后，得到明确的答案了。具体操作如下：
+要机械层上，先放置一个圆弧，之后将圆选中；
+执行Tools -&amp;gt; Convert -&amp;gt; Create Board Cutout from Selected Primitives.&lt;/p&gt;</summary></entry><entry><title>FPGA Design</title><link href="d-yu.github.io/fpga-design.html" rel="alternate"></link><updated>2015-05-28T19:50:25+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-05-28:d-yu.github.io/fpga-design.html</id><summary type="html">&lt;h2&gt;Bead and Cap.for Power Supply&lt;/h2&gt;
+&lt;p&gt;一般每个电源，一个bead！
+一个input，一个电容！&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;When we use MULTI-LAYER e.g 4 layer, then it is better to use this form because we can get the certain voltage whereve we want and the compenents can be distributed everywhere in the Board:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img alt="Imgur" src="http://i.imgur.com/pxILe4Q.png" /&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;when we use only 2 layer, it's better to use the normal form&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img alt="Imgur" src="http://i.imgur.com/FGPBWHL.png" /&gt;&lt;/p&gt;
+&lt;p&gt;TXB0108 is used as a Buffer and thus power supply of both side A and B can share the same Bead.&lt;/p&gt;
+&lt;p&gt;CORRECT:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="SHARE power supply" src="http://i.imgur.com/qVhOgs2.png" /&gt;&lt;/p&gt;
+&lt;p&gt;WRONG:
+&lt;img alt="falsh" src="http://i.imgur.com/uuVb6j9.png" /&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;Disscuss about the Ferrite Bead&lt;/h2&gt;
+&lt;p&gt;Ferrite Bead is almost like a Conductor. So it can combine with a capacity to elimite the noise of power supply and low the insertion loss of signal.
+&lt;img alt="LC" src="http://i.imgur.com/Q5Nr9Ma.png" /&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;When capacitors and inductors are combined as seen in &amp;gt; Figure 2-9 (b) and (c), the slope
+for the characteristics curve of insertion loss can be made more acute compared with using
+only a capacitor as in (a). Since the insertion loss in the decay area can be increased
+simultaneously this way, it is more advantageous when the noise must be greatly
+attenuated.Since, in Figure 2-9, the IC ground and the ground for the closest capacitor become
+return paths for the noise, they should be made as short as possible to minimize impedance.
+Also when a π-section filter is formed as shown in Figure 2-9 (c), it is more desirable to use
+a ground separate to the capacitor (with a via, etc.) so as to prevent noise from bypassing
+the inductor (when conditions of the grounds are not desirable) going through the ground
+(the ground plane is shared, however).
+The decoupling circuit shown in Figure 2-9 can be applied to noise entering from outside,
+in addition to noise emitted by the IC. &lt;strong&gt;For example, with circuits exposed to strong high
+frequency energy such as those in mobile phones, a decoupling circuit with capacitor and
+inductor combination to achieve larger insertion loss is more suitable&lt;/strong&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Analyse:&lt;/p&gt;
+&lt;p&gt;LC Filter Circuit&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Imgur" src="http://i.imgur.com/NcwG9tz.png" /&gt;&lt;/p&gt;
+&lt;p&gt;how to calucate the L value????&lt;/p&gt;
+&lt;p&gt;e.g.
+decoupling Cap. is 100 nF&lt;/p&gt;
+&lt;p&gt;100欧 @100Mhz 
+100欧表示感抗，|Z|
+Xl= jwl ;
+w=2&lt;em&gt;pi&lt;/em&gt;f;
+故
+&lt;img alt="Imgur" src="http://i.imgur.com/EWMNdKb.png" /&gt;&lt;/p&gt;
+&lt;p&gt;差分布线&lt;/p&gt;
+&lt;p&gt;开始需要在节点先用单线引出来一点，然后在布线&lt;/p&gt;
+&lt;p&gt;致命错误！！！！
+不能直接倒置元器件！
+因为实物是不能倒置或者对称镜像表示的&lt;/p&gt;</summary></entry><entry><title>VCCIO and LVDS input</title><link href="d-yu.github.io/vccio-and-lvds-input.html" rel="alternate"></link><updated>2015-05-26T11:32:48+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-05-26:d-yu.github.io/vccio-and-lvds-input.html</id><summary type="html">&lt;h2&gt;VCCIO and LVDS input&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Vccio is only for the &lt;strong&gt;Supply Voltage for output buffers&lt;/strong&gt;. &lt;/li&gt;
+&lt;li&gt;LVDS is &lt;strong&gt;2.5V&lt;/strong&gt;. and as an input it can be applied to the FPGA.&lt;/li&gt;
+&lt;/ol&gt;</summary></entry><entry><title>LVDS differential input pairs in FPGA</title><link href="d-yu.github.io/lvds-differential-input-pairs-in-fpga.html" rel="alternate"></link><updated>2015-05-25T21:54:12+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-05-25:d-yu.github.io/lvds-differential-input-pairs-in-fpga.html</id><summary type="html">&lt;h2&gt;FPGA board design part&lt;/h2&gt;
+&lt;p&gt;While routing the PCB board of FPGA I was wondering about why should i distribute the ADC input channels into different I/O BANKS. 
+Then I decide to put all of them together but I also doubt if I can do it in this way?!&lt;/p&gt;
+&lt;p&gt;After a while, I found a BIG problem for our board design. 
+WTF!
+Since we have 16 ADC differential input LVDS channels, but we only possess 14 available LVDS input channels in this FPGA. &lt;/p&gt;
+&lt;p&gt;Now the questions are:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;If the I/O inputs can be identified to LVDS inputs?&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;If the differential Clock inputs channels can be borrowed?&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;Got some points from the Altera forum:&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;Altera devices have dedicated LVDS transmitters and receivers containing serialize or deserializer hard-IP blocks。You can also emulate LVDS, but those pins run slower and do not have a SERDES option. The handbook for the device you are using has details.&lt;/li&gt;
+&lt;li&gt;Cyclone V FPGAs operating the LVDS I/O standard need the associated bank to be powered at 2.5V. This is the way Altera have chosen to power LVDS transceivers but isn't how all manufacturers have chosen to drive LVDS interfaces.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;sign...&lt;/p&gt;
+&lt;p&gt;明天找导师聊聊。。...&lt;/p&gt;
+&lt;p&gt;感觉要毕不了业了....&lt;/p&gt;
+&lt;p&gt;~&lt;/p&gt;</summary></entry><entry><title>Tx0106/0108 Voltage transfer &amp; Buffer</title><link href="d-yu.github.io/tx01060108-voltage-transfer-buffer.html" rel="alternate"></link><updated>2015-05-21T10:18:02+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-05-21:d-yu.github.io/tx01060108-voltage-transfer-buffer.html</id><summary type="html">&lt;h2&gt;Tx0106/0108 Voltage transfer &amp;amp; Buffer&lt;/h2&gt;
+&lt;p&gt;TXB0106和TXB0108的使用，
+必须保证&lt;/p&gt;
+&lt;p&gt;VCCA ≤ VCCB&lt;/p&gt;
+&lt;p&gt;&lt;img alt="typical application" src="http://i.imgur.com/gf33sg0.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Purpose:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Currunt Buffer&lt;/li&gt;
+&lt;li&gt;Voltage regulator&lt;/li&gt;
+&lt;/ol&gt;</summary></entry><entry><title>Changing the Values and names at ONCE in AD</title><link href="d-yu.github.io/changing-the-values-and-names-at-once-in-ad.html" rel="alternate"></link><updated>2015-05-19T16:11:46+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-05-19:d-yu.github.io/changing-the-values-and-names-at-once-in-ad.html</id><summary type="html">&lt;h2&gt;Altium Designer如何批量修改名称，数值，封装&lt;/h2&gt;
+&lt;p&gt;altium里的封装管理库&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Tools -&amp;gt; Footprint Manager -&amp;gt; ...&lt;/li&gt;
+&lt;li&gt;在Component List里选择要改的器件 &lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在View and Edit Footprints里改封装：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;原来有封装则选Edit；&lt;/li&gt;
+&lt;li&gt;原来没有封装则选Add...；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;改好后选Accept Changes(Create ECO)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;弹出菜单，注意检查Modify的内容有没有错&lt;/li&gt;
+&lt;li&gt;点Execute Changes&lt;/li&gt;
+&lt;li&gt;Close&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;其实你要改的器件肯定是有相同属性的，比如都是电容，或者多少容值的电容，所以采用找相同项的方法肯定也能满足你的要求，而且个人认为找相同项的功能很好用，推荐~~&lt;/p&gt;
+&lt;p&gt;BTW.
+You can use &lt;code&gt;ctrl + H&lt;/code&gt; to change the value of components.&lt;/p&gt;</summary><category term="FPGA"></category></entry><entry><title>Design of FPGA-Board(Cyclone3)</title><link href="d-yu.github.io/design-of-fpga-boardcyclone3.html" rel="alternate"></link><updated>2015-05-19T15:26:27+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-05-19:d-yu.github.io/design-of-fpga-boardcyclone3.html</id><summary type="html">&lt;h2&gt;1.why the EEPROM are use Bank 5&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="Extemory Interface" src="http://i.imgur.com/JuspieK.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Cyclone III Device Family" src="http://i.imgur.com/pad4Wlz.png" /&gt;&lt;/p&gt;
+&lt;h2&gt;2. Different IO Banks can suppport different Voltage supply&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The Cyclone III architecture supports the MultiVolt I/O interface feature that allows Cyclone III devices to interface with I/O systems that have
+different supply voltages.
+&lt;img alt="Altera " src="http://i.imgur.com/xadA1m6.png" /&gt;
+&lt;img alt="Altera" src="http://i.imgur.com/YicUQcY.png" /&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;3. The JTAG configuration&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="MSEL" src="http://i.imgur.com/zQXAvA6.png" /&gt;&lt;/p&gt;
+&lt;p&gt;the Voltag for the JTAG is corresponding to the Voltage supply of the Bank!
+Becasue &lt;code&gt;Pin 157&lt;/code&gt; resides in Bank 6. 
+&lt;img alt="JTAG" src="http://i.imgur.com/Vy14Bqw.png" /&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;JTAG-based configuration takes precedence over other configuration schemes, which means the MSEL pin settings are ignored. However, the
+POR time is dependent on the MSEL pin settings&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;4. Voltage to the DSP6678L&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="GPIO of DSP" src="http://i.imgur.com/ujZUP6e.png" /&gt;
+So we need a regulator to converte the voltage.&lt;/p&gt;
+&lt;h2&gt;5.TPS793xx voltage regulators&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="TPS793xx" src="http://i.imgur.com/f0gpCHJ.png" /&gt;
+&lt;img alt="ICTPS" src="http://i.imgur.com/b76Ub6w.png" /&gt;&lt;/p&gt;
+&lt;h2&gt;6. what is the USE of output clock of ADC chip(ADC_CLOCK and LCLOCK)&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="Imgur" src="http://i.imgur.com/eJcVGhk.png" /&gt;
+内部有PLL，进行倍频作用。&lt;/p&gt;</summary></entry><entry><title>Picking Resistors for LEDs</title><link href="d-yu.github.io/picking-resistors-for-leds.html" rel="alternate"></link><updated>2015-05-19T15:26:27+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-05-19:d-yu.github.io/picking-resistors-for-leds.html</id><summary type="html">&lt;p&gt;Basics: Picking Resistors for LEDs&lt;/p&gt;
+&lt;p&gt;http://www.evilmadscientist.com/2012/resistors-for-leds/&lt;/p&gt;</summary></entry><entry><title>ADC board design</title><link href="d-yu.github.io/adc-board-design.html" rel="alternate"></link><updated>2015-05-14T22:53:01+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-05-14:d-yu.github.io/adc-board-design.html</id><summary type="html">&lt;h2&gt;ADC板子设计&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;what is ADCLK-positive and negative ?&lt;/li&gt;
+&lt;li&gt;why AVDD and LVDD are equiquented with different capacities.?&lt;/li&gt;
+&lt;li&gt;FPGA 92,91 - ADCLK+/-&lt;/li&gt;
+&lt;li&gt;how to connect the lines of two adc chips to the FPGA board? what is the pin assignment?&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;普通模式的电压输出Vcm直接通过一个运放接给全差分运放作为ADC的输入数据。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Fibre 是什么玩意？ 
+磁珠&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;why in the original FPGA design the voltage of ADC input should be transferd to 2.5V , while by Jannik it is 3.3 V to the FPGA?   因为使用的fpga不同，电压不同&lt;/li&gt;
+&lt;li&gt;why the Vcom1 and Vcom2 are seperated ? it's the same!&lt;/li&gt;
+&lt;/ol&gt;</summary></entry><entry><title>Pelican blog</title><link href="d-yu.github.io/pelican-blog.html" rel="alternate"></link><updated>2015-05-14T15:36:04+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-05-14:d-yu.github.io/pelican-blog.html</id><summary type="html">&lt;h2&gt;Ein Blog aufzubauen durch Pelicn&lt;/h2&gt;
+&lt;h3&gt;准备工作&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;download the &lt;a href="https://www.python.org/ftp/python/3.4.3/python-3.4.3.amd64.msi" title="python-3.4.3.amd64.msi"&gt;python-3.4.3.amd64.msi&lt;/a&gt;(cause my PC is 64bit) and install it.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;em&gt;Note: the pip is already in the install folder "~/python34/scripts/"&lt;/em&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;put the c:/python34/scripts/ in the environment varible in computer&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Windows 7
+从“开始”菜单选择“电脑”
+从上下文菜单选择“系统属性”
+单击“高级系统设置 高级”选项卡
+单击“环境变量”，然后在“系统变量”下找到 PATH 并单击。
+在“编辑”窗口中，通过将类的位置添加到 PATH 的值来修改 PATH。如果没有项 PATH，可以选择添加新变量，然后添加 PATH 作为名称，添加类位置作为值。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;Install CMD terminal &lt;a href="http://msysgit.github.io/" title="git"&gt;Git&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Install &lt;a href="http://www.equation.com/servlet/equation.cmd?fa=make" title="make"&gt;make.exe&lt;/a&gt; for the Window IDE&lt;/li&gt;
+&lt;li&gt;open Git Bash and input the commands:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;pip install pelican
+pip install markdown&lt;/p&gt;
+&lt;p&gt;then do follow the steps in these Links&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.xycoding.com/articles/2013/11/21/blog-create/"&gt;使用Pelican和GitHub Pages搭建个人博客 &lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://mathamy.com/migrating-to-github-pages-using-pelican.html"&gt;Migrating to GitHub Pages using Pelican&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Then we are done!&lt;/p&gt;</summary></entry><entry><title>Questions of HW design</title><link href="d-yu.github.io/questions-of-hw-design.html" rel="alternate"></link><updated>2015-05-11T09:07:05+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-05-11:d-yu.github.io/questions-of-hw-design.html</id><summary type="html">&lt;h2&gt;Questions&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;how to determine the resister for the Opamp? &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;usually will it set to 10k, and depends on the gain or the function. only limit the current&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;the input comem mode input be open or GND?&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;how to get 4 Voltage, problem! and 1V.?&lt;/li&gt;
+&lt;li&gt;what is the use of 10 bit GPIO, 32 bit is to     control the IGBT?&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;10bit is to measure the position of moto or something else. 
+32bit is the GPIO output(32 Fiber optics outputs)!&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;the ideal Frequence of the Communication?&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;ol&gt;
+&lt;li&gt;can not find the similar RTL system?&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</summary></entry><entry><title>Generating Libs for Altium Design</title><link href="d-yu.github.io/generating-libs-for-altium-design.html" rel="alternate"></link><updated>2015-05-08T15:55:18+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-05-08:d-yu.github.io/generating-libs-for-altium-design.html</id><summary type="html">&lt;h2&gt;Using the Ultra Librarian to generate the Libs.&lt;/h2&gt;
+&lt;p&gt;&lt;a href="http://www.accelerated-designs.com/help/Altium_import.html" title="Importing a library into Altium Designer"&gt;Importing a library into Altium Designer&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;NOTE: make the files &lt;strong&gt;VISIBLE&lt;/strong&gt; otherwise you will not see these files&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;UL_Form.dfm&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;UL_Form.pas&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;UL_Import.pas&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;UL_Import.PrjScr&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;so we can build our own Library and PCB footprint&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h4&gt;Check Works&lt;/h4&gt;
+&lt;p&gt;ctrl + M in Altium to measure the size.&lt;/p&gt;</summary></entry><entry><title>Communication between FPGA and DSP28335</title><link href="d-yu.github.io/communication-between-fpga-and-dsp28335.html" rel="alternate"></link><updated>2015-04-25T13:58:12+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-04-25:d-yu.github.io/communication-between-fpga-and-dsp28335.html</id><summary type="html">&lt;h2&gt;Communication between FPGA and DSP28335&lt;/h2&gt;
+&lt;h3&gt;&lt;em&gt;This project want to creat a protocol between FPGA and DSP by using only 16 pins.&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;注意： VHDL的运行方式永远是并行的，所以进入某一个状态之后，它的输出ACK马上生效，而不像DSP中的C代码，进入一个状态后，需要一步一步执行，到最后才发送ACK信号。&lt;/p&gt;
+&lt;h2&gt;引脚分配/Pin Assignment&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="Imgur" src="http://i.imgur.com/w4vwVlr.png" /&gt;&lt;/p&gt;
+&lt;h2&gt;Logic in DSP - FSM&lt;/h2&gt;
+&lt;p&gt;I mainly creat two functions: &lt;code&gt;void Read_Adc(int addr0)&lt;/code&gt; and &lt;code&gt;Send ()&lt;/code&gt;.
+both of them are totally independent with each other and runs alway from State 0 start.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;interrupt void xint2_isr(void)
+{
+
+    GpioDataRegs.GPBSET.bit.GPIO34 = 1;
+
+//////////////// state 0/////////////////////////
+         GpioDataRegs.GPACLEAR.bit.GPIO3 = 1;
+         Gpio_Select(0) ;  // GPIO- output
+// enter the communication program accroding to the FPGA_CLK
+                     //  0B0010
+   Read_Adc(3);
+   //0B0011
+ Read_Adc(0);
+
+ Send(5,7,8);  // send the data
+        GpioDataRegs.GPBCLEAR.bit.GPIO34 = 1;
+    // Acknowledge this interrupt to get more from group 1
+    PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;   //clear the irq-flag
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;strong&gt;1.Read_Adc(); -- Stucture&lt;/strong&gt;
+&lt;img alt="Imgur" src="http://i.imgur.com/GXhxSN8.jpg" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Je nach den verschiedne addr0, kann es aber underschiedliche Address nach FPGA senden.&lt;/strong&gt; &lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;0000 -&amp;gt; get the ADC channel 0 value.&lt;/p&gt;
+&lt;p&gt;0001 -&amp;gt; get the ADC channel 1 value.&lt;/p&gt;
+&lt;p&gt;0010 -&amp;gt; get the ADC channel 2 value.&lt;/p&gt;
+&lt;p&gt;0011 -&amp;gt; get all the ADC channels(0,1,2) values.&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;strong&gt;2.void Send(int data0, int data1, int data2); -- Stucture&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Imgur" src="http://i.imgur.com/qxsAmHL.jpg" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;NOTE:  原本我是设定成从S10直接到S12，但是其实FPGA是在接收到DSP_ACK = 0的时候才跳转到S8状态，如果没有S11直接马上进入S12的话，发送的数据DATA1会覆盖原来S10发送的地址。如此一来，FPGA内部的代码就不能有效读取地址，判断状态机的跳转了。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Because here the pins that i used are not in a bank or a group and they are 
+distributed. So it is hard to send a Data directly to the DATA register and the Data must be set to the each bit pin one by one. 
+According to the TI &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;When using the GPxDAT register to change the level of an output pin, you should be cautious not to
+accidentally change the level of another pin. For example, if you mean to change the output latch level
+of GPIOA0 by writing to the GPADAT register bit 0, using a read-modify-write instruction. The problem
+can occur if another I/O port A signal changes level between the read and the write stage of the
+instruction. You can also change the state of that output latch. You can avoid this scenario by using
+the GPxSET, GPxCLEAR, and GPxTOGGLE registers to load the output latch instead.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;so i always using GPxSET and GPxCLEAR and GPxTOGGLE functions.&lt;/strong&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;strong&gt;An example Code for the data0 value to the 13 Datebus pins.&lt;/strong&gt; &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;////////////////&lt;/span&gt; &lt;span class="nt"&gt;state&lt;/span&gt; &lt;span class="nt"&gt;12&lt;/span&gt; &lt;span class="nt"&gt;send&lt;/span&gt; &lt;span class="nt"&gt;the&lt;/span&gt; &lt;span class="nt"&gt;1st&lt;/span&gt; &lt;span class="nt"&gt;data&lt;/span&gt;&lt;span class="o"&gt;/////////////////////////&lt;/span&gt;
+            &lt;span class="nt"&gt;if&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;state_flag&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="nt"&gt;11&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+            &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="n"&gt;while&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+                &lt;span class="err"&gt;{&lt;/span&gt;
+                    &lt;span class="n"&gt;FPGA_ACK&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPADAT&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO5&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                    &lt;span class="n"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;FPGA_ACK&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+                    &lt;span class="err"&gt;{&lt;/span&gt;
+                    &lt;span class="o"&gt;//&lt;/span&gt;  &lt;span class="n"&gt;Gpio_Select&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  &lt;span class="o"&gt;//&lt;/span&gt; &lt;span class="n"&gt;set&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;input&lt;/span&gt;
+
+                        &lt;span class="n"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;j&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;j&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="m"&gt;13&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;j&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+                        &lt;span class="err"&gt;{&lt;/span&gt;
+                        &lt;span class="n"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;getBit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data0&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;j&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+                        &lt;span class="err"&gt;{&lt;/span&gt;
+                            &lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;dsp&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;j&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;switch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;j&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+                            &lt;span class="err"&gt;{&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPASET&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO31&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPASET&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO29&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPASET&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO23&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;4&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPASET&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO21&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;5&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPASET&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO19&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;6&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPASET&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO17&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;7&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPASET&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO27&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;8&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPASET&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO25&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;9&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPCSET&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO85&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;10&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPBSET&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO49&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;11&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPASET&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO11&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;12&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPASET&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO9&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;13&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPASET&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO7&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="k"&gt;default&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="p"&gt;}&lt;/span&gt;
+
+                        &lt;span class="err"&gt;}&lt;/span&gt;
+                        &lt;span class="nt"&gt;else&lt;/span&gt;
+                        &lt;span class="p"&gt;{&lt;/span&gt;
+                            &lt;span class="n"&gt;switch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;j&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+                            &lt;span class="err"&gt;{&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPACLEAR&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO31&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPACLEAR&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO29&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPACLEAR&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO23&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;4&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPACLEAR&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO21&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;5&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPACLEAR&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO19&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;6&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPACLEAR&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO17&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;7&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPACLEAR&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO27&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;8&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPACLEAR&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO25&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;9&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPCCLEAR&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO85&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;10&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPBCLEAR&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO49&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;11&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPACLEAR&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO11&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;12&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPACLEAR&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO9&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="n"&gt;case&lt;/span&gt; &lt;span class="m"&gt;13&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                                &lt;span class="n"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPACLEAR&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GPIO7&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                                &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="k"&gt;default&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                            &lt;span class="p"&gt;}&lt;/span&gt;
+                        &lt;span class="err"&gt;}&lt;/span&gt;
+                        &lt;span class="err"&gt;}&lt;/span&gt;
+                        &lt;span class="nt"&gt;GpioDataRegs&lt;/span&gt;&lt;span class="nc"&gt;.GPASET.bit.GPIO3&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nt"&gt;1&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+                        &lt;span class="nt"&gt;state_flag&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nt"&gt;13&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+                        &lt;span class="nt"&gt;break&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+                    &lt;span class="err"&gt;}&lt;/span&gt;
+                &lt;span class="err"&gt;}&lt;/span&gt;
+            &lt;span class="err"&gt;}&lt;/span&gt;
+
+                &lt;span class="o"&gt;//&lt;/span&gt; &lt;span class="nt"&gt;get&lt;/span&gt; &lt;span class="nt"&gt;the&lt;/span&gt; &lt;span class="nt"&gt;Nr&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="nt"&gt;m&lt;/span&gt; &lt;span class="nt"&gt;bit&lt;/span&gt; &lt;span class="nt"&gt;of&lt;/span&gt; &lt;span class="nt"&gt;n&lt;/span&gt; &lt;span class="nt"&gt;from&lt;/span&gt; &lt;span class="nt"&gt;low&lt;/span&gt; &lt;span class="nt"&gt;bit&lt;/span&gt; &lt;span class="nt"&gt;to&lt;/span&gt; &lt;span class="nt"&gt;high&lt;/span&gt; &lt;span class="nt"&gt;bit&lt;/span&gt;
+                        &lt;span class="nt"&gt;int&lt;/span&gt; &lt;span class="nt"&gt;getBit&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;int&lt;/span&gt; &lt;span class="nt"&gt;n&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;int&lt;/span&gt; &lt;span class="nt"&gt;m&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+                        &lt;span class="p"&gt;{&lt;/span&gt;
+                        &lt;span class="n"&gt;return&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="m"&gt;-1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                        &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Logic in FPGA(VHDL) - FSM&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="Imgur" src="http://i.imgur.com/kGQQFKr.jpg" /&gt;&lt;/p&gt;
+&lt;p&gt;The FSM is written in 3 process with VHDL.
+using bi-directional Port in the low level&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;inout&lt;/span&gt; &lt;span class="n"&gt;std_logic_vector&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;12&lt;/span&gt; &lt;span class="n"&gt;downto&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;others&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Z&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Results&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;Read_Adc(3);&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;sending address 0011&lt;/p&gt;
+&lt;p&gt;VHDL&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;when S4 =&amp;gt; 
+        if(Adc_address = &amp;quot;0011&amp;quot;)then
+        Adc_buffer1 := &amp;quot;0&amp;quot; &amp;amp; x&amp;quot;aaa&amp;quot;;
+        Adc_buffer2 := &amp;quot;1&amp;quot; &amp;amp; x&amp;quot;000&amp;quot;;
+        Adc_buffer3 := &amp;quot;0&amp;quot; &amp;amp; x&amp;quot;555&amp;quot;;
+        FPGA_ACK &amp;lt;= &amp;#39;0&amp;#39;;    
+        end if;
+         led1 &amp;lt;= &amp;quot;111111&amp;quot;;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;DSP will storage the ADC values from FPGA to three array.
+&lt;img alt="Imgur" src="http://i.imgur.com/mvrT9gN.png" /&gt;
+&lt;img alt="Imgur" src="http://i.imgur.com/vNvimvl.png" /&gt;
+&lt;img alt="Imgur" src="http://i.imgur.com/jwC9kU1.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CORRECT!&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;2.Send(5,7,8)&lt;/p&gt;
+&lt;p&gt;The Led will blink !&lt;/p&gt;
+&lt;p&gt;3.
+&lt;img alt="Imgur" src="http://i.imgur.com/371zZrC.png" /&gt;
+&lt;img alt="Imgur" src="http://i.imgur.com/5DBfwA8.png" /&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;TIME for execution of these three functions
+&lt;img alt="Imgur" src="http://i.imgur.com/r0RTCNJ.png" /&gt;&lt;/li&gt;
+&lt;/ol&gt;</summary></entry><entry><title>GPIO DIR change limit</title><link href="d-yu.github.io/gpio-dir-change-limit.html" rel="alternate"></link><updated>2015-04-20T00:00:00+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-04-20:d-yu.github.io/gpio-dir-change-limit.html</id><summary type="html">&lt;h2&gt;GPIO 频率的问题&lt;/h2&gt;
+&lt;p&gt;For the output behavior of GPIO its limit is 25Mhz&lt;/p&gt;
+&lt;p&gt;And for the input of GPIO, it can be synchronous to system clock.&lt;/p&gt;
+&lt;p&gt;Besides, I have done a little  test to confirm the answer that I get. I put 10 normal instructions between the GPIO instructions. The 10 normal Instr. takes about 100 ns to be executed and takes 11 system cycles to execute. Then I get the sys_clk for the normal instruction is 110Mhz.&lt;/p&gt;</summary></entry><entry><title>Tristate_FPGA</title><link href="d-yu.github.io/tristate_fpga.html" rel="alternate"></link><updated>2015-04-16T21:03:28+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-04-16:d-yu.github.io/tristate_fpga.html</id><summary type="html">&lt;h2&gt;三态门-VHDL&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;三态门的“&lt;code&gt;Z&lt;/code&gt;”必须是大写，表示的意思是pin引脚三极管或者TTL的状态是截至状态的输出状态（&lt;em&gt;简单理解为开路&lt;/em&gt;）。&lt;/li&gt;
+&lt;li&gt;使用时，初始总线状态&lt;code&gt;（db）&lt;/code&gt;必须是 &lt;code&gt;‘Z’&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;以FPGA为对象:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;INOUT&lt;/code&gt;当 &lt;code&gt;input&lt;/code&gt; 使用时: &lt;code&gt;dataout &amp;lt;= db;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;INOUT&lt;/code&gt;当 &lt;code&gt;output&lt;/code&gt; 使用时:&lt;div class="highlight"&gt;&lt;pre&gt;if output_flag = 1 then
+    db &amp;lt;= datain;
+else
+    db &amp;lt;= &amp;#39;Z&amp;#39;;
+end if;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;简单来说，就是将双向口当输入时，随便用。当输出时，也随便用，但是用完之后要马上重新恢复到高阻态&lt;strong&gt;&lt;code&gt;“Z”&lt;/code&gt;&lt;/strong&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Right way to use it!&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;With inouts its better to split it up right at the top level into two signals data_from_outside and data_to_outside. Then your lower level needs three elements on the entity, one input vector, one output vector and a signal to say when to drive the outside data. Bidirectional signals don't sit well with records either.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The top level then needs to do:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;data_pins &amp;lt;= data_to_outside when data_to_outside_enable = &amp;#39;1&amp;#39; else (others =&amp;gt; &amp;#39;Z&amp;#39;);
+data_from_outside &amp;lt;= data_pins;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;From the point of view of style: put everything in one process. There's some debate about this, but many respected posters on comp.arch.fpga and &amp;gt;comp.lang.vhdl are of this opinion.&lt;/p&gt;</summary></entry><entry><title>VHDL</title><link href="d-yu.github.io/vhdl.html" rel="alternate"></link><updated>2015-04-16T00:12:08+02:00</updated><author><name>d-yu</name></author><id>tag:,2015-04-16:d-yu.github.io/vhdl.html</id><summary type="html">&lt;h2&gt;调试FPGA&lt;/h2&gt;
+&lt;h3&gt;经验1 ：&lt;/h3&gt;
+&lt;p&gt;VHDL中的程序执行是并行的，如果需要在状态机的一个状态下多次输出数值，这样利用CASE 或者
+LOOP语句是不能完成任务的。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;正确的做法： 重新进行结构规划，添加状态，用时序来规划顺序发送数值！输入信号必须是外部信号&lt;/p&gt;
+&lt;/blockquote&gt;</summary></entry></feed>
