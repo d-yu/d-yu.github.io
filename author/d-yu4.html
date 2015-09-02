@@ -41,6 +41,10 @@
 <!--         <br/> -->
 <!--         <br/> -->
 <!--      -->        
+<!--       <li><a href="">Then end of Masterarbeit</a></li> -->
+<!--      -->        
+<!--       <li><a href="">what is creepage and clearance</a></li> -->
+<!--      -->        
 <!--       <li><a href="">Religion</a></li> -->
 <!--      -->        
 <!--       <li><a href="">Life with color</a></li> -->
@@ -130,6 +134,66 @@
  
   </div>
 
+        
+        
+
+    
+            <aside id="featured">
+                <div class="body">
+                    <article>
+                        <h1 class="entry-title"><a href="../lvds-differential-input-pairs-in-fpga.html">LVDS differential input pairs in FPGA</a></h1>
+<div class="post-info">
+	<ul>
+        <li class="vcard author">
+                 by&nbsp;<a class="url fn" href="../author/d-yu/">d-yu</a>
+        </li>
+        <li class="published" title="2015-05-25T21:54:12+02:00">
+          on&nbsp;Mo 25 Mai 2015
+        </li>
+
+	</ul>
+
+</div><!-- /.post-info --><h2>FPGA board design part</h2>
+<p>While routing the PCB board of FPGA I was wondering about why should i distribute the ADC input channels into different I/O BANKS. 
+Then I decide to put all of them together but I also doubt if I can do it in this way?!</p>
+<p>After ...</p>
+                    </article>
+                </div>
+            </aside><!-- /#featured -->
+            
+        
+        
+
+    
+            <aside id="featured">
+                <div class="body">
+                    <article>
+                        <h1 class="entry-title"><a href="../tx01060108-voltage-transfer-buffer.html">Tx0106/0108 Voltage transfer & Buffer</a></h1>
+<div class="post-info">
+	<ul>
+        <li class="vcard author">
+                 by&nbsp;<a class="url fn" href="../author/d-yu.html">d-yu</a>
+        </li>
+        <li class="published" title="2015-05-21T10:18:02+02:00">
+          on&nbsp;Do 21 Mai 2015
+        </li>
+
+	</ul>
+
+</div><!-- /.post-info --><h2>Tx0106/0108 Voltage transfer &amp; Buffer</h2>
+<p>TXB0106和TXB0108的使用，
+必须保证</p>
+<p>VCCA ≤ VCCB</p>
+<p><img alt="typical application" src="http://i.imgur.com/gf33sg0.png" /></p>
+<p>Purpose:</p>
+<ol>
+<li>Currunt Buffer</li>
+<li>Voltage regulator</li>
+</ol>
+                    </article>
+                </div>
+            </aside><!-- /#featured -->
+            
         
         
 
@@ -341,71 +405,6 @@ different supply voltages.
 </li>
 <li>how to get 4 Voltage, problem! and 1V.?</li>
 <li>what is the use of 10 ...</li></ol>
-                    </article>
-                </div>
-            </aside><!-- /#featured -->
-            
-        
-        
-
-    
-            <aside id="featured">
-                <div class="body">
-                    <article>
-                        <h1 class="entry-title"><a href="../generating-libs-for-altium-design.html">Generating Libs for Altium Design</a></h1>
-<div class="post-info">
-	<ul>
-        <li class="vcard author">
-                 by&nbsp;<a class="url fn" href="../author/d-yu.html">d-yu</a>
-        </li>
-        <li class="published" title="2015-05-08T15:55:18+02:00">
-          on&nbsp;Fr 08 Mai 2015
-        </li>
-
-	</ul>
-
-</div><!-- /.post-info --><h2>Using the Ultra Librarian to generate the Libs.</h2>
-<p><a href="http://www.accelerated-designs.com/help/Altium_import.html" title="Importing a library into Altium Designer">Importing a library into Altium Designer</a></p>
-<p>NOTE: make the files <strong>VISIBLE</strong> otherwise you will not see these files</p>
-<p><strong>UL_Form.dfm</strong></p>
-<p><strong>UL_Form.pas</strong></p>
-<p><strong>UL_Import.pas</strong></p>
-<p><strong>UL_Import.PrjScr</strong></p>
-<p>so we can build our own Library and PCB footprint</p>
-<hr />
-<h4>Check Works</h4>
-<p>ctrl + M in Altium ...</p>
-                    </article>
-                </div>
-            </aside><!-- /#featured -->
-            
-        
-        
-
-    
-            <aside id="featured">
-                <div class="body">
-                    <article>
-                        <h1 class="entry-title"><a href="../communication-between-fpga-and-dsp28335.html">Communication between FPGA and DSP28335</a></h1>
-<div class="post-info">
-	<ul>
-        <li class="vcard author">
-                 by&nbsp;<a class="url fn" href="../author/d-yu.html">d-yu</a>
-        </li>
-        <li class="published" title="2015-04-25T13:58:12+02:00">
-          on&nbsp;Sa 25 April 2015
-        </li>
-
-	</ul>
-
-</div><!-- /.post-info --><h2>Communication between FPGA and DSP28335</h2>
-<h3><em>This project want to creat a protocol between FPGA and DSP by using only 16 pins.</em></h3>
-<p>注意： VHDL的运行方式永远是并行的，所以进入某一个状态之后，它的输出ACK马上生效，而不像DSP中的C代码，进入一个状态后，需要一步一步执行，到最后才发送ACK信号。</p>
-<h2>引脚分配/Pin Assignment</h2>
-<p><img alt="Imgur" src="http://i.imgur.com/w4vwVlr.png" /></p>
-<h2>Logic in DSP - FSM</h2>
-<p>I mainly creat two functions: <code>void Read_Adc(int addr0)</code> and <code>Send ()</code>.
-both of them ...</p>
                     </article>
  
 <div class="paginator">
